@@ -8,6 +8,12 @@ import FileEvent from "@/components/FileEvent";
 import { Event } from "nostr-tools";
 import Settings from "@/components/Settings";
 
+declare global {
+  interface Window {
+    nostr: any;
+    webln: any;
+  }
+}
 
 const customStyles = {
   content: {
@@ -45,24 +51,20 @@ export default function Home() {
     ],
     options: {
       closeAfterEose: false,
+      enabled: true,
+      force: true,
     }
   })
 
   return (
     <div className="p-10 max-h-screen h-screen">
       <div className="border-2 rounded-lg border-black overflow-auto h-5/6 relative">
-      <table className="w-full divide-y divide-gray-400 table-fixed">
+      <table className="w-full divide-y divide-gray-400">
         <thead className="sticky top-0 border-black">
           <tr>
-            <th className="p-1 text-sm font-semibold tracking-wide text-left">User</th>
-            <th className="p-1 text-sm font-semibold tracking-wide text-left w-1/6">title</th>
-            <th className="p-1 text-sm font-semibold tracking-wide text-left w-2/6 max-w-md">description</th>
-            <th className="p-1 text-sm font-semibold tracking-wide text-center hidden lg:table-cell">mime-type</th>
-            <th className="p-1 text-sm font-semibold tracking-wide text-center">type</th>
-            <th className="p-1 text-sm font-semibold tracking-wide text-center">size</th>
-            <th className="p-1 text-sm font-semibold tracking-wide text-center w-auto">prize</th>
-            <th className="p-1 text-sm font-semibold tracking-wide text-center">comments</th>
-            <th className="p-1 text-sm font-semibold tracking-wide text-center">location</th>
+            <th className="p-1 text-sm font-semibold tracking-wide text-center w-[1%] whitespace-nowrap">User</th>
+            <th className="p-1 text-sm font-semibold tracking-wide text-left">title</th>
+            <th className="p-1 text-sm font-semibold tracking-wide w-[1%] whitespace-nowrap"></th>
           </tr>
         </thead>
         <tbody className="divide-y divide-black break-words">
