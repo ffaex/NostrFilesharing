@@ -5,25 +5,28 @@ import {Event, nip57} from 'nostr-tools'
 import Modal from 'react-modal';
 import { useSubscribe } from 'nostr-hooks'
 import { getLnurl } from '@/utils/utils'
-import { nip19 } from 'nostr-tools'
 import {bech32} from '@scure/base'
 
 const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-    },
-  };
-  
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    backgroundColor: "white",
+    width: 250,
+  },
+};
 
 function Zap({eventToZap, style} : {eventToZap: Event, style?: string}) {
 
   const relays = useStore((state) => state.relays)
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen, seModalIsOpen] = useState(false);
+  useEffect(() => {
+    console.log(modalIsOpen)
+  }, [modalIsOpen]);
   const [amount, setAmount] = useState(0);
   const [satsZapped, setSatsZapped] = useState(0);
 
@@ -125,7 +128,7 @@ function Zap({eventToZap, style} : {eventToZap: Event, style?: string}) {
           if(typeof window.webln !== 'undefined') {
             await window.webln.enable();
             await window.webln.sendPayment(invoice)
-            setIsOpen(false)
+            seModalIsOpen(false)
           }
           window.open(`lightning:${invoice}`)
         }
@@ -135,14 +138,14 @@ function Zap({eventToZap, style} : {eventToZap: Event, style?: string}) {
         }
         } else{
           window.open(`lightning:${invoice}`)
-          setIsOpen(false)
+          seModalIsOpen(false)
         }
 
     } 
     
   
   return (
-    <div onClick={() => setIsOpen(true)} className={`flex items-centers ${style}`}>
+    <div onClick={() => seModalIsOpen(true)} className={`flex items-centers ${style}`}>
         <div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
@@ -152,12 +155,13 @@ function Zap({eventToZap, style} : {eventToZap: Event, style?: string}) {
             {satsZapped}
         </span>
         <Modal
+        className={'relative rounded-2xl p-2'}
         isOpen={modalIsOpen}
-        onRequestClose={() => setIsOpen(false)}
+        onRequestClose={() => seModalIsOpen(false)}
         style={customStyles}
         contentLabel="Example Modal"
         appElement={document.getElementById("root")!}
-        shouldCloseOnOverlayClick={true} // not working??
+        //shouldCloseOnOverlayClick={true} // not working??
         >
         <div className="flex flex-col items-center justify-center">
             <div className="flex items-center justify-center">
@@ -176,6 +180,22 @@ function Zap({eventToZap, style} : {eventToZap: Event, style?: string}) {
                 </button>
             </div>
         </div>
+        <svg
+          onClick={() => seModalIsOpen(false)}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={3}
+          stroke="currentColor"
+          className="w-6 h-6 top-0 right-0 absolute"
+          style={{ transform: "translate(50%, -50%)" }}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
         </Modal>
 
     </div>

@@ -37,7 +37,7 @@ function FileEvent({eventProps} : {eventProps: Event<1 | 1063>}) {
       </td>
       <td><Link className='hover:underline underline-offset-1 hover:text-blue-600' href={{ pathname: '/post', query: { data: JSON.stringify(eventProps) }}}>{data["title"]}</Link></td>
       <td>
-      <div className='flex space-x-10 items-center'>
+      <div className='flex space-x-5 items-center'>
         <Zap eventToZap={eventProps}/>
         <a target="_blank" rel="noopener noreferrer" className='' href={data["location"]}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={3} stroke="currentColor" className="text-blue-700 w-6 m-auto">
