@@ -8,6 +8,10 @@ function Rating({rating , event} : {rating: number, event: Event}) {
     const publish = usePublish(relays);
 
     const handleSend = async (content : string) => {
+      if (!window.nostr) {
+        alert("Nostr extension not found")
+        return
+      }
         let tags = event.tags?.filter((tag) => tag.length >=2 && tag[0] === "e" || tag[0] === "p")
         tags.push(["e", event.id])
         tags.push(["p", event.pubkey])
