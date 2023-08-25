@@ -76,8 +76,8 @@ const PostFileEvent = ({modalSetter} : {modalSetter : Function}) => {
       // TODO set x tag for hash
       let tags = [
         ["url", locationRef.current?.value],
-        ["m", mimeType.current || "---"],
-        ["size", fileSize.current?.toString() || "---"],
+        ["m", mimeType.current || ""],
+        ["size", fileSize.current?.toString() || ""],
         ["t", type],
       ];
   
