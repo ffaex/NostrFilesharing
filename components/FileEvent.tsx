@@ -31,7 +31,7 @@ function FileEvent({eventProps} : {eventProps: Event<1 | 1063>}) {
     <tr>
       <td className=''>
         <div className='flex space-x-1 items-center max-w-fit'>
-          <Rating event={eventProps}/>
+          <Rating style='flex-col' event={eventProps}/>
           <PictureAndName event={eventProps}/>
         </div>
       </td>

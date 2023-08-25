@@ -2,6 +2,8 @@ import { Event } from '@/../nostr-tools/lib';
 import React, { useEffect, useState } from 'react'
 import SendComment from './SendComment';
 import CommentsList from './CommentsList';
+import Rating from './Rating';
+import Zap from './Zap';
 
 // https://stackoverflow.com/a/51359101
 // https://stackoverflow.com/a/61928989
@@ -86,6 +88,10 @@ function Post() {
                 <div className='p-1'>
                     <span>{content.description}</span>
                 </div>
+            </div>
+            <div className='flex space-x-2 items-stretch'>
+                <Rating style='space-x-2 my-2 p-1 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100' event={data} />
+                <Zap style='space-x-1 my-2 items-center px-4 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100' eventToZap={data} />
             </div>
             <div className='mt-2'>
                 <SendComment event={data} />

@@ -20,7 +20,7 @@ const customStyles = {
   };
   
 
-function Zap({eventToZap} : {eventToZap: Event}) {
+function Zap({eventToZap, style} : {eventToZap: Event, style?: string}) {
 
   const relays = useStore((state) => state.relays)
   const [modalIsOpen, setIsOpen] = useState(false);
@@ -142,9 +142,9 @@ function Zap({eventToZap} : {eventToZap: Event}) {
     
   
   return (
-    <div className='flex items-centers'>
+    <div onClick={() => setIsOpen(true)} className={`flex items-centers ${style}`}>
         <div>
-            <svg onClick={() => setIsOpen(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
             </svg>
         </div>
@@ -156,7 +156,8 @@ function Zap({eventToZap} : {eventToZap: Event}) {
         onRequestClose={() => setIsOpen(false)}
         style={customStyles}
         contentLabel="Example Modal"
-        ariaHideApp={false}
+        appElement={document.getElementById("root")!}
+        shouldCloseOnOverlayClick={true} // not working??
         >
         <div className="flex flex-col items-center justify-center">
             <div className="flex items-center justify-center">
