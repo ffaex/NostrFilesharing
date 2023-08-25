@@ -1,12 +1,32 @@
 import React from 'react'
-import { usePublish } from 'nostr-hooks';
+import { usePublish, useSubscribe } from 'nostr-hooks';
 import useStore from './store';
 import { Event } from 'nostr-tools';
 
-function Rating({rating , event} : {rating: number, event: Event}) {
-    const relays = useStore((state) => state.relays)
-    const publish = usePublish(relays);
+function Rating({event} : {event: Event}) {
+  const relays = useStore((state) => state.relays)
+  var rating = 0
 
+  const {events : reactionEvents} = useSubscribe({
+    relays: relays,
+    filters: [{
+      kinds: [7],
+      "#e": [event.id],
+      "#p": [event.pubkey]
+    }
+    ],
+    options: {
+      closeAfterEose: false,
+    }
+  })
+
+  if (reactionEvents.length > 0) {
+    var upVotes = reactionEvents.filter((event : Event) => event.content === "+").length
+    var downVotes = reactionEvents.filter((event : Event) => event.content === "-").length
+    rating = upVotes - downVotes
+  }
+  
+    const publish = usePublish(relays);
     const handleSend = async (content : string) => {
       if (!window.nostr) {
         alert("Nostr extension not found")

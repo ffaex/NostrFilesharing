@@ -7,29 +7,7 @@ import PictureAndName from './PictureAndName'
 import Zap from './Zap'
 import Link from 'next/link'
 
-function FileEvent({eventProps} : {eventProps: Event<1 | 1063>}) {
-  const relays = useStore((state) => state.relays)
-  var rating = 0
-
-  const {events : reactionEvents} = useSubscribe({
-    relays: relays,
-    filters: [{
-      kinds: [7],
-      "#e": [eventProps.id],
-      "#p": [eventProps.pubkey]
-    }
-  ],
-  options: {
-    closeAfterEose: false,
-  }
-  })
-
-  if (reactionEvents.length > 0) {
-    var upVotes = reactionEvents.filter((event : Event) => event.content === "+").length
-    var downVotes = reactionEvents.filter((event : Event) => event.content === "-").length
-    rating = upVotes - downVotes
-  }
-  
+function FileEvent({eventProps} : {eventProps: Event<1 | 1063>}) {  
     try {
     var data = JSON.parse(eventProps.content);
   } catch (e) {
@@ -53,7 +31,7 @@ function FileEvent({eventProps} : {eventProps: Event<1 | 1063>}) {
     <tr>
       <td className=''>
         <div className='flex space-x-1 items-center max-w-fit'>
-          <Rating rating={rating} event={eventProps}/>
+          <Rating event={eventProps}/>
           <PictureAndName event={eventProps}/>
         </div>
       </td>
