@@ -9,11 +9,11 @@ function SendComment({event} : {event: Event}) {
     const publish = usePublish(relays)
 
     const handleComment = async (e : any) => {
+      e.preventDefault()
         if (!window.nostr) {
             alert("Nostr extension not found")
             return
         }
-        e.preventDefault()
         let tags = [["e", event.id ,relays[0], "reply"]]
         tags.push(["p", event.pubkey])
         await publish({
