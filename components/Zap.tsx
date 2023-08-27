@@ -1,4 +1,4 @@
-import React, { use, useEffect } from 'react'
+import React, { use, useEffect, useRef } from 'react'
 import useStore from '@/components/store'
 import { useState } from 'react'
 import {Event, nip57} from 'nostr-tools'
@@ -6,6 +6,7 @@ import Modal from 'react-modal';
 import { useSubscribe } from 'nostr-hooks'
 import { getLnurl } from '@/utils/utils'
 import {bech32} from '@scure/base'
+import InvoiceQr from './InvoiceQr';
 
 const customStyles = {
   content: {
@@ -16,7 +17,8 @@ const customStyles = {
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
     backgroundColor: "white",
-    width: 250,
+    width: '33%',
+    minHeight: '33%',
   },
 };
 
@@ -24,9 +26,8 @@ function Zap({eventToZap, style} : {eventToZap: Event, style?: string}) {
 
   const relays = useStore((state) => state.relays)
   const [modalIsOpen, seModalIsOpen] = useState(false);
-  useEffect(() => {
-    console.log(modalIsOpen)
-  }, [modalIsOpen]);
+  const [invoiceModal, setInvoiceModal] = useState(false);
+  const invoice = useRef("")
   const [amount, setAmount] = useState(0);
   const [satsZapped, setSatsZapped] = useState(0);
 
@@ -119,39 +120,29 @@ function Zap({eventToZap, style} : {eventToZap: Event, style?: string}) {
     const event = encodeURI(JSON.stringify(signedEvent))
     const data = await fetch(`${zapEndpoint}?amount=${amount}&nostr=${event}&lnurl=${lnurl}`)
     const result = await data.json()
-    const invoice = result.pr
+    invoice.current = result.pr
     if (result.status === "ERROR") {
         alert(`Error: ${result.reason}`)
     } else if (result.status === "OK") {
         console.log(invoice)
-        try {
-          if(typeof window.webln !== 'undefined') {
-            await window.webln.enable();
-            await window.webln.sendPayment(invoice)
-            seModalIsOpen(false)
-          }
-          window.open(`lightning:${invoice}`)
+        seModalIsOpen(false)
+        setInvoiceModal(true)
+        if(typeof window.webln !== 'undefined') {
+          await window.webln.enable();
+          await window.webln.sendPayment(invoice.current)
         }
-        catch(error) {
-          // User denied permission or cancelled 
-          console.log(error);
-        }
-        } else{
-          window.open(`lightning:${invoice}`)
-          seModalIsOpen(false)
-        }
-
+      }
     } 
     
   
   return (
-    <div onClick={() => seModalIsOpen(true)} className={`flex items-centers ${style}`}>
-        <div>
+    <div className={`flex items-centers ${style}`}>
+        <div onClick={() => seModalIsOpen(true)}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
             </svg>
         </div>
-        <span>
+        <span onClick={() => seModalIsOpen(true)}>
             {satsZapped}
         </span>
         <Modal
@@ -196,6 +187,17 @@ function Zap({eventToZap, style} : {eventToZap: Event, style?: string}) {
             d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
           />
         </svg>
+        </Modal>
+
+        <Modal
+          className={'relative rounded-2xl p-2'}
+          isOpen={invoiceModal}
+          onRequestClose={() => setInvoiceModal(false)}
+          style={customStyles}
+          contentLabel="Example Modal"
+          appElement={document.getElementById("root")!}
+         >
+          <InvoiceQr invoice={invoice.current} />
         </Modal>
 
     </div>

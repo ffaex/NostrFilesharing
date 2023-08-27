@@ -1,7 +1,7 @@
 "use client"
 import { Event } from '@/../nostr-tools/lib';
 import Post from '@/components/Post';
-import React, { useEffect } from 'react'
+import React from 'react'
 
 function page() {  
     return (
