@@ -19,7 +19,7 @@ function PictureAndName({event}: {event: Event}) {
         pictureUrl = JSON.parse(metadataEvents[0].content)["picture"] || "dummy.svg"
     }
   return (
-    <div className='flex flex-col space-x-1 items-center'>
+    <div className='lg:flex flex-col space-x-1 items-center hidden'>
         <img className='rounded-full w-16 h-16 hidden lg:block' src={pictureUrl} alt='picture of author'/>
         <span className='text-center text-xs font-semibold w-16 break-words'>{name}</span>
     </div>
