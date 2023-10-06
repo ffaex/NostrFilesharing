@@ -3,6 +3,7 @@ import { Event } from 'nostr-tools'
 import { useSubscribe } from 'nostr-hooks'
 import useStore from './store'
 import PictureAndName from './PictureAndName'
+import Rating from './Rating'
 
 function CommentsList({event} : {event: Event}) {
     const relays = useStore((state) => state.relays)
@@ -22,7 +23,8 @@ function CommentsList({event} : {event: Event}) {
     <div className='flex flex-col space-y-1'>
         {commentEvents.sort((a,b) => b.created_at - a.created_at).map((commentEvent : Event) => {
             return (
-            <div key={commentEvent.id} className='flex items-center border-2 border-gray-500 rounded-lg p-1'>
+            <div key={commentEvent.id} className='flex items-center border-2 border-gray-500 rounded-lg p-1 space-x-1'>
+                <Rating style='flex-col' event={commentEvent}/>
                 <PictureAndName event={commentEvent}/>
                 <span className=''>{commentEvent.content}</span>
             </div>
