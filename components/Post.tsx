@@ -10,6 +10,8 @@ import PostOfferEventResponse from "./PostOfferEventResponse";
 import Modal from "react-modal";
 import { useSubscribe } from "nostr-hooks";
 import useStore from "./store";
+import OfferCommentsList from "./OfferCommentsList";
+import { useRouter } from "next/router";
 
 const customStyles = {
   content: {
@@ -53,22 +55,6 @@ function Post() {
     setData(JSON.parse(event.data));
   }, []);
 
-  const relays = useStore((state) => state.relays);
-  const {events : responseOffers} = useSubscribe({
-    relays: relays,
-    filters: [
-      {
-        kinds: [1063],
-        "#t": ["offer"],
-        "#e": [
-          data ? data.id : "someVale hooks are not allowed to be conditional",
-        ],
-      },
-    ],
-    options: {
-      closeAfterEose: false,
-    },
-  });
   if (!data) {
     return <div>loading...</div>;
   }
@@ -167,21 +153,7 @@ function Post() {
           {data.tags.find((tag) => tag[0] === "t")?.[1] === "request" && (
               <div>
                 <div className="text-2xl font-bold text-center space-y-1">Offers</div>
-                {responseOffers.map((event) => {
-                  // todo make it a seperate component, maybe itll work then....
-                  const title = JSON.parse(event.content).title;
-                  return (
-                    <div className="flex space-x-1 justify-between" key={event.id}>
-                      <div>
-                        <Rating event={event} />
-                        <span>{title}</span>
-                      </div>
-                      <div>
-                        <Zap eventToZap={event} />
-                      </div>
-                    </div>
-                  )
-                } )}
+                <OfferCommentsList event={data} />
               </div>
             )}
         </div>
