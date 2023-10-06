@@ -89,7 +89,7 @@ function Post() {
   }
 
   return (
-    <div className="flex flex-col m-10 bg-blue-400 stretchedMargin">
+    <div className="flex flex-col m-10 bg-blue-400">
       <div className="bg-blue-500 w-full mx-auto pl-4 text-xl">
         <h1>{content.title}</h1>
       </div>
