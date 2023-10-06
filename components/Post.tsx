@@ -53,8 +53,9 @@ function Post() {
     setData(JSON.parse(event.data));
   }, []);
 
-  const responseOffers = useSubscribe({
-    relays: [],
+  const relays = useStore((state) => state.relays);
+  const {events : responseOffers} = useSubscribe({
+    relays: relays,
     filters: [
       {
         kinds: [1063],
@@ -68,7 +69,6 @@ function Post() {
       closeAfterEose: false,
     },
   });
-  const relays = useStore((state) => state.relays);
   if (!data) {
     return <div>loading...</div>;
   }
@@ -90,11 +90,11 @@ function Post() {
 
   return (
     <div className="flex flex-col m-10 bg-blue-400">
-      <div className="bg-blue-500 w-full mx-auto pl-4 text-xl">
+      <div className="bg-blue-500 w-full mx-auto pl-4 text-xl sticky top-0">
         <h1>{content.title}</h1>
       </div>
       <div className="flex flex-row">
-        <div className="px-4 w-1/2 lg:w-full lg:max-w-[80%]">
+        <div className="px-4 w-1/2 lg:w-full lg:min-w-[80%]">
           <div className="flex bg-blue-400 justify-between space-x-3">
             <div className="flex flex-col">
               <div className="p-1">
@@ -163,9 +163,26 @@ function Post() {
             <CommentsList event={data} />
           </div>
         </div>
-        <div>
+        <div className="px-4 w-full overflow-hidden">
           {data.tags.find((tag) => tag[0] === "t")?.[1] === "request" && (
-              <div className="text-2xl font-bold">Offers</div>
+              <div>
+                <div className="text-2xl font-bold text-center space-y-1">Offers</div>
+                {responseOffers.map((event) => {
+                  // todo make it a seperate component, maybe itll work then....
+                  const title = JSON.parse(event.content).title;
+                  return (
+                    <div className="flex space-x-1 justify-between" key={event.id}>
+                      <div>
+                        <Rating event={event} />
+                        <span>{title}</span>
+                      </div>
+                      <div>
+                        <Zap eventToZap={event} />
+                      </div>
+                    </div>
+                  )
+                } )}
+              </div>
             )}
         </div>
       </div>

@@ -6,7 +6,8 @@ type State = {
 };
 
 const useStore = create<State>((set) => ({
-    relays: ['wss://relay.damus.io', 'wss://nos.lol'],
+    //relays: ['wss://relay.damus.io', 'wss://nos.lol'],
+    relays: ['wss://relay.nostrss.re'],
     setRelays: (relays) => set({relays}),
 }));
 
