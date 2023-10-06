@@ -59,9 +59,9 @@ const PostOfferEventResponse = ({modalSetter, paramEvent} : {modalSetter : Funct
       console.log(locationRef.current?.value);
       // TODO set x tag for hash
       let tags = [
-        ["url", locationRef.current?.value],
-        ["m", mimeType.current || ""],
-        ["size", fileSize.current?.toString() || ""],
+        ["url", locationRef.current?.value || "undefined"],
+        ["m", mimeType.current || "undefined"],
+        ["size", fileSize.current?.toString() || "undefined"],
         ["t", type],
       ];
       tags.push(["e", paramEvent.id ,relays[0], "reply"])
