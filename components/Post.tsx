@@ -93,77 +93,81 @@ function Post() {
       <div className="bg-blue-500 w-full mx-auto pl-4 text-xl">
         <h1>{content.title}</h1>
       </div>
-      <div className="px-4 lg:max-w-[80%]">
-        <div className="flex bg-blue-400 justify-between space-x-3">
-          <div className="flex flex-col">
-            <div className="p-1">
-              <span style={{}} className="underline">
-                Filetype:
-              </span>
-              <span> {data.tags.find((tag) => tag[0] === "m")?.[1]}</span>
+      <div className="flex flex-row">
+        <div className="px-4 w-1/2 lg:w-full lg:max-w-[80%]">
+          <div className="flex bg-blue-400 justify-between space-x-3">
+            <div className="flex flex-col">
+              <div className="p-1">
+                <span style={{}} className="underline">
+                  Filetype:
+                </span>
+                <span> {data.tags.find((tag) => tag[0] === "m")?.[1]}</span>
+              </div>
+              <div className="p-1">
+                <span style={{}} className="underline">
+                  Size:
+                </span>
+                <span> {content.size}</span>
+              </div>
+              <div className="p-1">
+                <span>Prize: </span>
+                <span>{content.prize}</span>
+              </div>
             </div>
-            <div className="p-1">
-              <span style={{}} className="underline">
-                Size:
-              </span>
-              <span> {content.size}</span>
-            </div>
-            <div className="p-1">
-              <span>Prize: </span>
-              <span>{content.prize}</span>
+            <div className="flex flex-col">
+              <div className="p-1">
+                <span>Uploaded: </span>
+                <span>{new Date(data.created_at * 1000).toLocaleString()}</span>
+              </div>
+              <div className="p-1">
+                <span>Filetype: </span>
+                <span>{data.tags.find((tag) => tag[0] === "t")?.[1]}</span>
+              </div>
             </div>
           </div>
-          <div className="flex flex-col">
+          <div className="flex bg-blue-300 min-h-[11rem] border border-blue-200 shadow-md rounded-lg">
             <div className="p-1">
-              <span>Uploaded: </span>
-              <span>{new Date(data.created_at * 1000).toLocaleString()}</span>
-            </div>
-            <div className="p-1">
-              <span>Filetype: </span>
-              <span>{data.tags.find((tag) => tag[0] === "t")?.[1]}</span>
+              <span>{content.description}</span>
             </div>
           </div>
-        </div>
-        <div className="flex bg-blue-300 min-h-[11rem] border border-blue-200 shadow-md rounded-lg">
-          <div className="p-1">
-            <span>{content.description}</span>
+          <div className="flex justify-between">
+            <div className="flex gap-x-2 items-stretch flex-wrap">
+              <Rating
+                style="space-x-2 my-2 p-1 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100"
+                event={data}
+              />
+              <Zap
+                style="space-x-1 my-2 items-center px-4 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100"
+                eventToZap={data}
+              />
+              <DownloadButton
+                style="items-center space-x-2 my-2 p-2 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100"
+                event={data}
+              />
+            </div>
+            {
+              data.tags.find((tag) => tag[0] === "t")?.[1] === "request" && (
+                <button
+                  onClick={() => setModalOpen(true)}
+                  className="space-x-2 my-2 p-1 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100 font-semibold"
+                >
+                  Make offer
+                </button>
+              ) //todo modal make it refernce other event
+            }
+          </div>
+          <div className="mt-2">
+            <SendComment event={data} />
+          </div>
+          <div className="my-2">
+            <CommentsList event={data} />
           </div>
         </div>
-        <div className="flex justify-between">
-          <div className="flex gap-x-2 items-stretch flex-wrap">
-            <Rating
-              style="space-x-2 my-2 p-1 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100"
-              event={data}
-            />
-            <Zap
-              style="space-x-1 my-2 items-center px-4 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100"
-              eventToZap={data}
-            />
-            <DownloadButton
-              style="items-center space-x-2 my-2 p-2 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100"
-              event={data}
-            />
-          </div>
-          {
-            data.tags.find((tag) => tag[0] === "t")?.[1] === "request" && (
-              <button
-                onClick={() => setModalOpen(true)}
-                className="space-x-2 my-2 p-1 border-2 rounded-2xl shadow-lg bg-blue-200 hover:bg-blue-100 font-semibold"
-              >
-                Make offer
-              </button>
-            ) //todo modal make it refernce other event
-          }
+        <div>
+          {data.tags.find((tag) => tag[0] === "t")?.[1] === "request" && (
+              <div className="text-2xl font-bold">Offers</div>
+            )}
         </div>
-        <div className="mt-2">
-          <SendComment event={data} />
-        </div>
-        <div className="my-2">
-          <CommentsList event={data} />
-        </div>
-        {data.tags.find((tag) => tag[0] === "t")?.[1] === "request" && (
-          <div className="text-2xl font-bold">Offers</div>
-        )}
       </div>
       <Modal
         className={"relative"}
