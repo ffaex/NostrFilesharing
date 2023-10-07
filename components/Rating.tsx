@@ -1,18 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { usePublish, useSubscribe } from 'nostr-hooks';
 import useStore from './store';
 import { Event } from 'nostr-tools';
 
 function Rating({event, style} : {event: Event, style?: string}) {
   const relays = useStore((state) => state.relays)
-  var rating = 0
+  const [rating, setRating] = React.useState(0)
 
   const {events : reactionEvents} = useSubscribe({
     relays: relays,
     filters: [{
       kinds: [7],
       "#e": [event.id],
-      "#p": [event.pubkey]
     }
     ],
     options: {
@@ -20,11 +19,19 @@ function Rating({event, style} : {event: Event, style?: string}) {
     }
   })
 
-  if (reactionEvents.length > 0) {
-    var upVotes = reactionEvents.filter((event : Event) => event.content === "+").length
-    var downVotes = reactionEvents.filter((event : Event) => event.content === "-").length
-    rating = upVotes - downVotes
-  }
+  useEffect(() => {
+    const cleanedEvents = reactionEvents.filter((reactionEvent: Event) => reactionEvent.tags.filter((tag) => tag[0] === "e").pop()![1] === event.id)
+    console.log(`reaktion auf event: ${event.id}. Die Events: ${cleanedEvents.map((event) => JSON.stringify(event))}`)
+  }, [event, reactionEvents])
+
+  useEffect(() => {
+  const cleanedEvents = reactionEvents.filter((reactionEvent: Event) => reactionEvent.tags.filter((tag) => tag[0] === "e").pop()![1] === event.id)
+    if (cleanedEvents.length > 0) {
+      var upVotes = cleanedEvents.filter((reactionEvent : Event) => reactionEvent.content === "+").length
+      var downVotes = cleanedEvents.filter((reactionEvent : Event) => reactionEvent.content === "-").length
+     setRating(upVotes - downVotes)
+    }
+  }, [reactionEvents])
   
     const publish = usePublish(relays);
     const handleSend = async (content : string) => {
