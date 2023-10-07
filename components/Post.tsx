@@ -80,7 +80,7 @@ function Post() {
         <h1>{content.title}</h1>
       </div>
       <div className="flex flex-row">
-        <div className="px-4 w-1/2 lg:w-full lg:min-w-[80%]">
+        <div className="px-4 w-1/2 lg:min-w-[80%]">
           <div className="flex bg-blue-400 justify-between space-x-3">
             <div className="flex flex-col">
               <div className="p-1">
@@ -149,7 +149,7 @@ function Post() {
             <CommentsList event={data} />
           </div>
         </div>
-        <div className="px-4 w-full overflow-hidden">
+        <div className="px-4 shrink overflow-hidden">
           {data.tags.find((tag) => tag[0] === "t")?.[1] === "request" && (
               <div>
                 <div className="text-2xl font-bold text-center space-y-1">Offers</div>
