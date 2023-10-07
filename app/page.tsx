@@ -33,13 +33,13 @@ export default function Home() {
   const [eventModalOpen, setEventModalOpen] = useState(false);
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
-    
+
   const [relays, setRelays] = useStore((state) => [
     state.relays,
     state.setRelays,
   ]);
 
-  const {events} = useSubscribe({
+  const { events } = useSubscribe({
     relays: relays,
     filters: [
       {
@@ -48,42 +48,53 @@ export default function Home() {
       },
       {
         kinds: [1],
-        "#t" : ["request"],
-      }
+        "#t": ["request"],
+      },
     ],
     options: {
       closeAfterEose: false,
       enabled: true,
       force: true,
-    }
-  })
+    },
+  });
 
   return (
     <div className="p-10 max-h-screen h-screen">
-      <Searchbar keywordSetter={setKeyword}/>
+      <Searchbar keywordSetter={setKeyword} />
       <div className="border-2 rounded-lg border-black overflow-auto h-5/6 relative">
-      <table className="w-full divide-y divide-gray-400">
-        <thead className="sticky top-0 border-black">
-          <tr>
-            <th className="p-1 text-sm font-semibold tracking-wide text-center w-[1%] whitespace-nowrap">User</th>
-            <th className="p-1 text-sm font-semibold tracking-wide text-left">title</th>
-            <th className="p-1 text-sm font-semibold tracking-wide w-[1%] whitespace-nowrap"></th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-black break-words">
-          {events.filter((e) => e.content.includes(keyword)).map((event) => {
-            return (
-              <FileEvent key={event.id} eventProps={event as Event<1 | 1063>} />
-            )
-          })}
-        </tbody>
-      </table>
+        <table className="w-full divide-y divide-gray-400">
+          <thead className="sticky top-0 border-black">
+            <tr>
+              <th className="p-1 text-sm font-semibold tracking-wide text-center w-[1%] whitespace-nowrap">
+                User
+              </th>
+              <th className="p-1 text-sm font-semibold tracking-wide text-left">
+                title
+              </th>
+              <th className="p-1 text-sm font-semibold tracking-wide w-[1%] whitespace-nowrap"></th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-black break-words">
+            {events
+              .filter((e) => e.content.includes(keyword))
+              .map((event) => {
+                return (
+                  <FileEvent
+                    key={event.id}
+                    eventProps={event as Event<1 | 1063>}
+                  />
+                );
+              })}
+          </tbody>
+        </table>
       </div>
 
-      <button onClick={() => setEventModalOpen(true)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-36 h-12 absolute right-11 bottom-28">
+      <button
+        onClick={() => setEventModalOpen(true)}
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg w-36 h-12 absolute right-11 bottom-28"
+      >
         Post
       </button>
-
 
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +124,7 @@ export default function Home() {
         style={customStyles}
         ariaHideApp={false}
       >
-        <Settings modalSetter={setSettingsModalOpen}/>
+        <Settings modalSetter={setSettingsModalOpen} />
       </Modal>
 
       <Modal
