@@ -31,7 +31,7 @@ function OfferCommentsList({event} : {event: Event}) {
             <div key={commentEvent.id} className='flex justify-between items-center border-2 border-gray-500 rounded-lg p-1 space-x-1'>
                 <div className='flex items-center space-x-1'>
                     <Rating style='flex-col' event={commentEvent}/>
-                    <Link className='hover:underline underline-offset-1 hover:text-blue-600' onClick={() => {Router.reload()}} href={{ pathname: '/post', query: { data: JSON.stringify(commentEvent) }}}>{title}</Link>
+                    <Link className='hover:underline underline-offset-1 hover:text-blue-600' href={{ pathname: '/post', query: { data: JSON.stringify(commentEvent) }}}>{title}</Link>
                 </div>
                 <div>
                     <Zap eventToZap={commentEvent}/>

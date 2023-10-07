@@ -12,6 +12,7 @@ import { useSubscribe } from "nostr-hooks";
 import useStore from "./store";
 import OfferCommentsList from "./OfferCommentsList";
 import { useRouter } from "next/router";
+import { useSearchParams } from 'next/navigation'
 
 const customStyles = {
   content: {
@@ -48,12 +49,13 @@ const getQueryStringParams = (query: any) => {
 };
 
 function Post() {
+  const searchParams = useSearchParams()
   const [data, setData] = useState<Event>();
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
     const event = getQueryStringParams(window.location.search);
     setData(JSON.parse(event.data));
-  }, []);
+  }, [searchParams]);
 
   if (!data) {
     return <div>loading...</div>;
