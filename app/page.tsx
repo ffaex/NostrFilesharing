@@ -7,6 +7,7 @@ import { useSubscribe } from "nostr-hooks";
 import FileEvent from "@/components/FileEvent";
 import { Event } from "nostr-tools";
 import Settings from "@/components/Settings";
+import Searchbar from "@/components/Searchbar";
 
 declare global {
   interface Window {
@@ -31,6 +32,7 @@ const customStyles = {
 export default function Home() {
   const [eventModalOpen, setEventModalOpen] = useState(false);
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
+  const [keyword, setKeyword] = useState("");
     
   const [relays, setRelays] = useStore((state) => [
     state.relays,
@@ -58,6 +60,7 @@ export default function Home() {
 
   return (
     <div className="p-10 max-h-screen h-screen">
+      <Searchbar keywordSetter={setKeyword}/>
       <div className="border-2 rounded-lg border-black overflow-auto h-5/6 relative">
       <table className="w-full divide-y divide-gray-400">
         <thead className="sticky top-0 border-black">
@@ -68,7 +71,7 @@ export default function Home() {
           </tr>
         </thead>
         <tbody className="divide-y divide-black break-words">
-          {events.map((event) => {
+          {events.filter((e) => e.content.includes(keyword)).map((event) => {
             return (
               <FileEvent key={event.id} eventProps={event as Event<1 | 1063>} />
             )
