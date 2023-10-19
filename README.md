@@ -1,34 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Nostr FileShare Client
 
-## Getting Started
+## Description
+Nostr FileShare Client is a simple, lean web client dedicated to facilitating the sharing and requesting of files over the Nostr network. It uses special event kinds, particularly `kind:1` with a `"t"` tag to mark posts as file sharing offers or requests. The client supports file sharing via HTTP and BitTorrent protocols, ensuring versatility and efficiency in file transfers.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+### File Offering
+Users can offer files with details including the title, description, and the file’s location provided in a standardized plain-text format. Example:
+
+```plaintext
+title: Autobiography, Charles Dickens
+description: A very cool book I wrote
+location: magnet:...
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### File Requesting
+Users can request files and offer a prize in satoshis to whoever provides the requested file. This process is based on trust. Example request:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```plaintext
+title: Wanted: The Great Gatsby
+description: Looking for a high-quality version of this classic novel
+offer: 1000 satoshis
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Table View
+Offers and requests are displayed in a structured table view for easy navigation and access. This UI layout streamlines the process of finding and offering files.
 
-## Learn More
+### Zap Spec Integration
+The client integrates the "zap" spec for tipping, allowing file offerers to receive tips for providing files and enabling requesters to fulfill their promised payments.
 
-To learn more about Next.js, take a look at the following resources:
+### Comments & Reputation System
+Comments on file offers and requests are displayed, enabling users to engage and potentially build a rudimentary reputation system. Alternatively, a `nostr:nevent1` link to posts might be used to facilitate user interaction within their preferred client.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contribution
+Contributions are welcome! Feel free to open issues or submit pull requests to enhance the Nostr FileShare Client. Your input is invaluable.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## License
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-## Deploy on Vercel
+## Acknowledgments
+A special thanks to the Nostr community and jb55 for their ongoing support and collaboration in making this project a reality.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**Note**: Please ensure to check the legality and copyright restrictions of the files you are sharing or requesting to comply with the applicable laws and regulations.
